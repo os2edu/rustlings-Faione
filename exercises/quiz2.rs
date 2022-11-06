@@ -40,16 +40,7 @@ mod my_module {
 
                 Command::Trim => string.trim().into(),
 
-                Command::Append(amount) => {
-                    let mut i = 0;
-                    let mut result = String::from(string);
-                    while i < *amount {
-                        result.push_str("bar");
-                        i += 1;
-                    }
-
-                    result
-                }
+                Command::Append(amount) => string.to_string() + &"bar".repeat(*amount),
             });
         }
         output

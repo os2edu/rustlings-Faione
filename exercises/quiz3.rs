@@ -14,18 +14,45 @@
 
 // Execute `rustlings hint quiz3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+use std::fmt; 
+
+pub enum RepresentType {
+    Numerical,
+    Alphabetical
+}
 
 pub struct ReportCard {
     pub grade: f32,
     pub student_name: String,
     pub student_age: u8,
+    pub represent_type: RepresentType,
 }
 
 impl ReportCard {
     pub fn print(&self) -> String {
-        format!("{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade)
+        // format!("{} ({}) - achieved a grade of {}",
+        //     &self.student_name, &self.student_age, &self.grade)
+        format!("{}", self)
+    }
+}
+
+impl fmt::Display for ReportCard {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+
+        match self.represent_type {
+            RepresentType::Numerical => {
+                write!(f, "{} ({}) - achieved a grade of {}", self.student_name, self.student_age, self.grade)
+            }
+            RepresentType::Alphabetical => {
+                if self.grade > 4.0 {
+                    write!(f, "{} ({}) - achieved a grade of {}", self.student_name, self.student_age, "A+")
+                }else{
+                    write!(f, "{} ({}) - achieved a grade of {}", self.student_name, self.student_age, "TBD")
+                }
+                
+            }
+        }
+        
     }
 }
 
@@ -39,6 +66,7 @@ mod tests {
             grade: 2.1,
             student_name: "Tom Wriggle".to_string(),
             student_age: 12,
+            represent_type: RepresentType::Numerical,
         };
         assert_eq!(
             report_card.print(),
@@ -50,9 +78,10 @@ mod tests {
     fn generate_alphabetic_report_card() {
         // TODO: Make sure to change the grade here after you finish the exercise.
         let report_card = ReportCard {
-            grade: 2.1,
+            grade: 4.5,
             student_name: "Gary Plotter".to_string(),
             student_age: 11,
+            represent_type: RepresentType::Alphabetical,
         };
         assert_eq!(
             report_card.print(),
